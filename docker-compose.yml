@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    image: http-tryout-server
+    env_file:
+      - .env
+    volumes:
+      - .:/home/user/src/app
+    ports:
+      - $FLASK_RUN_PORT:$FLASK_RUN_PORT
+  
+  db:
+    image: postgres:14.5-alpine3.16
+    env_file:
+      - .env
+    environment:
+      - POSTGRES_PASSWORD=$DB_PASSWORD
+    ports:
+      - 5432:5432
+    volumes:
+      - dbdata:/var/lib/postgresql/data/
+
+volumes:
+  dbdata:

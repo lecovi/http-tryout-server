@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block content %}
+    <h1>Request</h1>
+    <h2>Start Line</h2>
+    <table>
+    {% for k,v in record.raw_data["start_line"].items() %}
+        <tr>
+            <th>{{k}}</th>
+            <td>{{v}}</td>
+        </tr>
+    {% endfor %}
+    </table>
+    <h2>Headers</h2>
+    <table>
+    {% for k,v in record.raw_data["headers"].items() %}
+        <tr>
+            <th>{{k}}</th>
+            <td>{{v}}</td>
+        </tr>
+    {% endfor %}
+    </table>
+    <h2>Body</h2>
+    <table>
+        <tr>
+            <th>Body</th>
+            <td>{{record.raw_data["body"]}}</td>
+        </tr>
+    </table>
+    <h1>Other Metadata</h1>
+    <table>
+        
+        <tr>
+            <th>Hash:</th>
+            <td>{{record.key}}</td>
+        </tr>
+        <tr>
+            <th>Remote Address:</th>
+            <td>{{record.extra["remote_addr"]}}</td>
+        </tr>
+        <tr>
+            <th>Created On:</th>
+            <td>{{record.created_on}}</td>
+        </tr>
+        <tr>
+            <th>Updated On:</th>
+            <td>{{record.updated_on}}</td>
+        </tr>
+    </table>
+{% endblock %}
