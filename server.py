@@ -1,16 +1,13 @@
+import hashlib
 import json
 from datetime import datetime
 from os import getenv
-import hashlib
-import json
 
-import click
-from flask import Flask, request, jsonify, render_template, Request
+from flask import Flask, Request, jsonify, render_template, request
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.dialects.postgresql import JSON
 from sqlalchemy.sql import func
 from werkzeug.datastructures import EnvironHeaders, ImmutableMultiDict
-
 
 DB_PASSWORD = getenv("DB_PASSWORD")
 DB_URI = f"postgresql://postgres:{DB_PASSWORD}@db:5432/postgres"
