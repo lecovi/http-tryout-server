@@ -13,7 +13,7 @@ from werkzeug.datastructures import EnvironHeaders, ImmutableMultiDict
 
 
 DB_PASSWORD = getenv("DB_PASSWORD")
-DB_URI = f'postgresql://postgres:{DB_PASSWORD}@db:5432/postgres'
+DB_URI = f"postgresql://postgres:{DB_PASSWORD}@db:5432/postgres"
 
 
 def parse_request_var_to_value_for_dict(value):
@@ -27,6 +27,7 @@ def parse_request_var_to_value_for_dict(value):
         return value
     else:
         return str(value)
+
 
 class CustomRequest(Request):
     def to_dict(self):
@@ -43,7 +44,7 @@ class CustomFlask(Flask):
 
 
 app = CustomFlask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = DB_URI
+app.config["SQLALCHEMY_DATABASE_URI"] = DB_URI
 db = SQLAlchemy(app)
 
 
@@ -61,9 +62,12 @@ class UserRequest(db.Model):
             "key": self.key,
             "raw_data": self.raw_data,
             "created_on": self.created_on.isoformat(),
-            "updated_on": self.updated_on.isoformat() if self.updated_on else self.updated_on,
+            "updated_on": self.updated_on.isoformat()
+            if self.updated_on
+            else self.updated_on,
             "extra": self.extra,
         }
+
 
 def get_hash_from_dict(data):
     "Returns hexdigest from a given dictionary"
@@ -92,12 +96,10 @@ def home():
         "start_line": {
             "http_method": request.method,
             "request_target": request.path,
-            "http_version": request.environ.get('SERVER_PROTOCOL'),
+            "http_version": request.environ.get("SERVER_PROTOCOL"),
         },
-        "headers": {
-            name: value for name, value in request.headers.items()
-            },
-        "body": request.data.decode(),
+        "headers": {name: value for name, value in request.headers.items()},
+        "body": request.data.decode(),  # FIXME: are we 100% sure that we can decode here?
     }
     timestamped_request = {"req": user_request, "timestamp": datetime.now().isoformat()}
     hashed_request = get_hash_from_dict(timestamped_request)
@@ -123,7 +125,7 @@ def home():
 @app.route("/<key>/json")
 def view_request(key):
     record = UserRequest.query.filter_by(key=key).first()
-    
+
     if record is None:
         return "User Request Not Found", 404
 
