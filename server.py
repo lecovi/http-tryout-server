@@ -1,4 +1,3 @@
-from dbm import dumb
 import json
 from datetime import datetime
 from os import getenv
